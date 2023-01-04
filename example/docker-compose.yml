@@ -29,7 +29,7 @@ services:
       apisix:
 
   apisix:
-    image: apache/apisix:latest
+    image: apache/apisix:2.15.0-alpine
     restart: always
     volumes:
       - ./apisix_log:/usr/local/apisix/logs
@@ -104,6 +104,19 @@ services:
       - "./grafana_conf/provisioning:/etc/grafana/provisioning"
       - "./grafana_conf/dashboards:/var/lib/grafana/dashboards"
       - "./grafana_conf/config/grafana.ini:/etc/grafana/grafana.ini"
+    networks:
+      apisix:
+
+  nacos:
+    image: nacos/nacos-server:v2.2.0
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    volumes:
+      - ./standalone-logs/:/home/nacos/logs
+    ports:
+      - "8848:8848"
+      - "9848:9848"
     networks:
       apisix:
 
